@@ -1,3 +1,29 @@
+const TonWeb = require("tonweb");
+
+
+const BN = TonWeb.utils.BN;
+
+// 1 TON = 10^9 nanoton; 1 nanoton = 0.000000001 TON;
+// So 0.5 TON is 500000000 nanoton
+
+const toNano = TonWeb.utils.toNano;
+
+const channelInitState = {
+        balanceA: toNano('1'), // A's initial balance in Toncoins. Next A will need to make a top-up for this amount
+        balanceB: toNano('2'), // B's initial balance in Toncoins. Next B will need to make a top-up for this amount
+        seqnoA: new BN(0), // initially 0
+        seqnoB: new BN(0)  // initially 0
+    };
+
+const channelConfig = {
+    channelId: new BN(124), // Channel ID, for each new channel there must be a new ID
+    addressA: walletAddressA, // A's funds will be withdrawn to this wallet address after the channel is closed
+    addressB: walletAddressB, // B's funds will be withdrawn to this wallet address after the channel is closed
+    initBalanceA: channelInitState.balanceA,
+    initBalanceB: channelInitState.balanceB
+}
+
+
 var PORT = 8033;
 var MAX_ROOM_USERS = 5;
 
@@ -131,6 +157,40 @@ function handleSocket(socket) {
     });
     log('User %s joined room %s. Users in room: %d',
       user.getId(), room.getName(), room.numUsers());
+
+    /*  if (room.users.length === 2) {
+    const channelA = tonweb.payments.createChannel({
+        ...channelConfig,
+        isA: true,
+        myKeyPair: keyPairA,
+        hisPublicKey: keyPairB.publicKey,
+    });
+    const channelAddress = await channelA.getAddress();
+    console.log('channelAddress=', channelAddress.toString(true, true, true));
+
+    const channelB = tonweb.payments.createChannel({
+        ...channelConfig,
+        isA: false,
+        myKeyPair: keyPairB,
+        hisPublicKey: keyPairA.publicKey,
+    });
+
+    if ((await channelB.getAddress()).toString() !== channelAddress.toString()) {
+        throw new Error('Channels address not same');
+    }
+
+    const fromWalletA = channelA.fromWallet({
+        wallet: walletA,
+        secretKey: keyPairA.secretKey
+    });
+
+    const fromWalletB = channelB.fromWallet({
+        wallet: walletB,
+        secretKey: keyPairB.secretKey
+    });
+    }
+
+    */
   }
 
   function getOrCreateRoom(name) {
