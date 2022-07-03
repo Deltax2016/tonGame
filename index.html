@@ -142,7 +142,7 @@
         cursor: pointer;
         padding: 0 24px;
         border-radius: 50px;
-        min-width: 200px;
+        width: 280px;
         height: 50px;
         font-size: 18px;
         background-color: #fd0;
@@ -202,6 +202,21 @@
 		color:rgb(195, 191, 191);
 		font-size: 12px;
 	}
+	.maxBtn {
+		position: absolute;
+		max-width: 60px;
+		height: 24px;
+		font-size: 10px;
+		background-color: #D3D3D3;
+		color:#000;
+		top:5px;
+	}
+	.withdrawBtn {
+		position: absolute;
+	}
+	.withdrawWrapper {
+		width: 280px;
+	}
 </style>
 
 <body>
@@ -224,21 +239,26 @@
 			<h1 id="walletHeader">Please connect wallet</h1>
 			<button class="startBtn" id="connect">Connect Wallet</button>
 			<span id="startTonBalance" style="display:none">Your TON balanceL</span>
-			<input type="number" placeholder="Deposit amount" id="depositInput" style="display:none">
+			<div class="withdrawWrapper">
+				<input class="form-control" type="number" placeholder="Deposit amount" id="depositInput" style="display:none">
+			</div>
 			<button class="startBtn" id="depositLoad" style="display:none"><span class="loader"></span></button>
 			<button class="startBtn" id="deposit" style="display:none">Deposit</button>
 			<p id="feeInfo" style="display:none">...</p>
 			<span id="startInternalBalance" style="display:none">Your in-game TON balance:</span>
-			<input type="number" placeholder="Withdrawal amount" id="withdrawInput" style="display:none">
+			<div class="input-group withdrawWrapper">
+				<input type="number" class="form-control" placeholder="Withdrawal amount" id="withdrawInput" style="display:none">
+				<button class="btn btn-outline-secondary" id="maxWithdraw" style="display:none">MAX</button>
+			</div>
 			<button class="startBtn" id="withdrawLoad" style="display:none"><span class="loader"></span></button>
-			<button class="startBtn" id="withdraw" style="display:none">Withdraw</button>
+			<button class="startBtn" id="withdraw" style="display:none">Withdraw</button>	
 			<!-- <input class="startBtn" id="connect" type="button" value="Connect Wallet"/> -->
 			<div id="room" style="display:none">
 				<div class="input-group mb-3 p-3">
 					<input type="text" class="form-control" placeholder="Name of play" aria-label="Name of play" aria-describedby="button-addon2" disabled="disabled" id="inputName">
 					<button class="btn btn-outline-secondary" type="button" disabled="disabled" id="name">To play</button>
 				</div>
-				<button class="createGame btn btn-white btn-big" disabled="disabled" id="createGame">Create Game</button>	
+				<button class="createGame btn btn-white btn-big" disabled="disabled" id="createGame">Create Game</button>
 			</div>
 		</div>
 

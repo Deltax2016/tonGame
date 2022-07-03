@@ -49,6 +49,7 @@ if (!window.location.search) {
         document.getElementById("connect").disabled = true;
         document.getElementById("withdrawInput").style.display = "inline-block"
         document.getElementById("withdraw").style.display = "inline-block"
+        document.getElementById("maxWithdraw").style.display = "inherit"
       }
       const withdrawButton = document.getElementById("withdraw")
       withdrawButton.addEventListener("click", async function() {
@@ -67,6 +68,7 @@ if (!window.location.search) {
             payload: 'Withdraw',
             sendMode: 3,
           });
+          
           const transferSended = await transfer.send();
           document.getElementById("withdraw").style.display = "none";
           document.getElementById("withdrawLoad").style.display = "inline-block";
@@ -81,6 +83,7 @@ if (!window.location.search) {
                 const textBalance = "Your in-game balance: " + (internalBalanceNow/10**9).toString() + " TON"
                 const internalBalance = document.getElementById("startInternalBalance")
                 internalBalance.innerText = textBalance
+                document.getElementById("withdrawInput").value = ''
                 document.getElementById("withdrawLoad").style.display = "none";
                 document.getElementById("withdraw").style.display = "inline-block"    
                 clearInterval(intervalId);
@@ -88,8 +91,37 @@ if (!window.location.search) {
             }
             intervalId = setInterval(wait, 5000);
           } else {
+            document.getElementById("withdrawInput").value = ''
             document.getElementById("withdrawLoad").style.display = "none";
             document.getElementById("withdraw").style.display = "inline-block"
+          }
+        } catch(err) {
+          console.log(err)
+        }
+      })
+      const maxButton = document.getElementById("maxWithdraw")
+      maxButton.addEventListener("click", async function (){
+        try {
+          const base64Key = localStorage.getItem("secretKey")
+          const internalBalance = await tonweb.getBalance(internalAddress);
+          const amount = (internalBalance / 10**9)
+          const bytesArray = TonWeb.utils.hexToBytes(base64Key)
+          const internalWallet = tonweb.wallet.create({address: localStorage.getItem("walletAddress")})
+          const seqno = await internalWallet.methods.seqno().call()
+          const transfer = internalWallet.methods.transfer({
+            secretKey: bytesArray,
+            toAddress: localStorage.getItem("userTonWalletAddress"),
+            amount: TonWeb.utils.toNano(amount.toString()),
+            seqno: seqno,
+            payload: 'Withdraw',
+            sendMode: 3,
+          })
+          const transferFee = await transfer.estimateFee();
+          const fee = transferFee.source_fees.fwd_fee + transferFee.source_fees.gas_fee + transferFee.source_fees.in_fwd_fee + transferFee.source_fees.storage_fee
+          const feeNum = fee / 10**9
+          const value = (amount - (feeNum)*1.1).toFixed(9)
+          if (value > 0.001) {
+            document.getElementById("withdrawInput").value = value
           }
         } catch(err) {
           console.log(err)
@@ -152,6 +184,7 @@ if (!window.location.search) {
                 const internalBalance = document.getElementById("startInternalBalance")
                 internalBalance.style.display = "inherit"
                 internalBalance.innerText = textBalance
+                document.getElementById("depositInput").value = ''
                 clearInterval(intervalId);
                 if (deploy) {
                   document.getElementById("feeInfo").innerText = "Deploying..."
@@ -178,6 +211,7 @@ if (!window.location.search) {
                   }
                   deployInterval = setInterval(waitDeploy, 5000)
                 } else {
+                  document.getElementById("depositInput").value = ''
                   document.getElementById("withdrawInput").style.display = "inline-block"
                   document.getElementById("withdraw").style.display = "inline-block"                    
                   document.getElementById("feeInfo").style.display = "none"
@@ -223,6 +257,8 @@ if (!window.location.search) {
           const numBalance = balance / 10**9
           if (numBalance >= 1) {
             window.location.search =  Math.random().toString(16).slice(-10);
+          } else {
+            document.getElementById("")
           }
         });
     });
