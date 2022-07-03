@@ -6,7 +6,7 @@
     "sg-start": "pm2 start signalling/server.js -i 1 --name signalling",
     "sg-stop": "pm2 delete signalling",
     "signalling": "node signalling/server.js",
-    "http": "browserify lib/index.js > dist/index.js && http-server -c-1 . -p 8080"
+    "http": "browserify lib/index.js > dist/index.js && http-server -c-1 . -p 80"
   },
   "keywords": [
     "webrtc",
