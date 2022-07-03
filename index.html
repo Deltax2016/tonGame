@@ -143,6 +143,99 @@
 			margin: 25px;
 		}
 
+		/* Chrome, Safari, Edge, Opera */
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+		/* Firefox */
+		input[type=number] {
+			-moz-appearance: textfield;
+		}
+		.startContainer {
+			display:flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			height: 500px;
+			padding: 25px;
+		}
+		.flexBox {
+			display: flex;
+			flex-direction: column;
+			max-width: 1000px;
+			max-height: 1000px;
+			justify-content: center;
+		}
+		.startBtn {
+			display: inline-block;
+			outline: 0;
+			border: none;
+			cursor: pointer;
+			padding: 0 24px;
+			border-radius: 50px;
+			min-width: 200px;
+			height: 50px;
+			font-size: 18px;
+			background-color: #fd0;
+			font-weight: 500;
+			color: #222;
+			margin: 10px 0;
+		}
+		.startBtn:hover {
+			background-color: rgb(204, 184, 54);
+		}
+		.canvasWrapper {
+			margin: 50px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		#room {
+			display: flex;
+			flex-direction: column;
+			max-width: 500px;
+			justify-content: space-between;
+		}
+		#startStage {
+			display: inherit;
+		}
+		.loader {
+			width: 24px;
+			height: 24px;
+			border: 5px solid rgb(160, 48, 48);
+			border-bottom-color: transparent;
+			border-radius: 50%;
+			display: inline-block;
+			box-sizing: border-box;
+			animation: rotation 1s linear infinite;
+			}
+
+			@keyframes rotation {
+			0% {
+				transform: rotate(0deg);
+			}
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+		#canvasHeader {
+			padding: 0 24px;
+			margin: 25px;
+		}
+		.startBalances {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			margin: 25px;
+		}
+		#feeInfo {
+			color:rgb(195, 191, 191);
+			font-size: 12px;
+		}
+
 	</style>
 	<script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
 
@@ -164,10 +257,8 @@
 <body>
 	<div class="canvasWrapper">
 		<span id="internalWallet" class="canvasHeader" style="display: none;">Your in-game wallet: </span>
-		<span id="internalBalance" class="canvasHeader" style="display: none;">Your wallet balance: </span>
-		<span id="ingameBalance" class="canvasHeader" style="display: none;">Your in-game balance: </span>
-		<span id="enemyBalance" class="canvasHeader" style="display: none;">Your enemy in-game balance: </span>
-		<button class="startBtn" id="finishGame" style="display:none">Finish Game</button>
+		<span id="tonBalance" class="canvasHeader" style="display: none;">Your TON balance: </span>
+		<span id="internalBalance" class="canvasHeader" style="display: none;">Your in-game TON balance: </span>
 		<canvas id="canvas" style="display: none;"></canvas>
 		<div id="info" style="display: none;">
 			11. WSAD to move & jump<br/>
@@ -180,9 +271,16 @@
 		<div class="startContainer">
 			<h1 id="walletHeader">Please connect wallet</h1>
 			<button class="startBtn" id="connect">Connect Wallet</button>
-			<input type="number" placeholder="0" id="depositInput" style="display:none">
+			<span id="startTonBalance" style="display:none">Your TON balance</span>
+			<input type="number" placeholder="Deposit amount" id="depositInput" style="display:none">
 			<button class="startBtn" id="depositLoad" style="display:none"><span class="loader"></span></button>
 			<button class="startBtn" id="deposit" style="display:none">Deposit</button>
+			<p id="feeInfo" style="display:none">...</p>
+			<span id="startInternalBalance" style="display:none">Your in-game TON balance:</span>
+			<input type="number" placeholder="Withdrawal amount" id="withdrawInput" style="display:none">
+			<button class="startBtn" id="withdrawLoad" style="display:none"><span class="loader"></span></button>
+			<button class="startBtn" id="withdraw" style="display:none">Withdraw</button>
+			<!-- <input class="startBtn" id="connect" type="button" value="Connect Wallet"/> -->
 			<div id="room" style="display:none">
 				<div class="input-group mb-3 p-3">
 					<input type="text" class="form-control" placeholder="Name of play" aria-label="Name of play" aria-describedby="button-addon2" disabled="disabled" id="inputName">
